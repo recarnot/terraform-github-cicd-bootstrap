@@ -3,12 +3,12 @@ resource "github_repository" "project" {
   description = var.repository_description
   private     = var.repository_private
   auto_init   = true
+  homepage_url  = var.homepage_url
+  has_issues    = var.has_issues
+  has_projects  = var.has_projects
+  has_wiki      = var.has_wiki
+  has_downloads = var.has_downloads
 
-  homepage_url  = ""
-  has_issues    = true
-  has_projects  = false
-  has_wiki      = false
-  has_downloads = false
   topics        = ["cicd", "terraform", "github", "github-actions"]
 }
 
