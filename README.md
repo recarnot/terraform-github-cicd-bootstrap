@@ -13,7 +13,7 @@ Just import the module and set required variables :
 
 ```typescript
 module "cicd_bootstrap" {
-  source = "app.terraform.io/terraform-deepdive/cicd-bootstrap/github"
+  source = "recarnot/cicd-bootstrap/github"
 
   github_token        = "GITHUB_TOKEN_HERE"
   github_organization = "GITHUB_ORGANIZATION_HERE"
@@ -28,7 +28,7 @@ Or in full version :
 
 ```typescript
 module "cicd_bootstrap" {
-  source = "app.terraform.io/terraform-deepdive/cicd-bootstrap/github"
+  source = "recarnot/cicd-bootstrap/github"
 
   github_token        = "GITHUB_TOKEN_HERE"
   github_organization = "GITHUB_ORGANIZATION_HERE"
