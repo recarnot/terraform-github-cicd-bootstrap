@@ -39,7 +39,7 @@ resource "github_repository_file" "scripts" {
 resource "github_repository_file" "empty" {
   repository = github_repository.project.name
   file       = "main.tf"
-  content    = ""
+  content    = file("${path.module}/template/empty.template")
 
   depends_on = [github_repository_file.scripts]
 }
