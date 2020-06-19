@@ -1,0 +1,13 @@
+{
+  "data":
+  {
+    "attributes": {
+      "name":"placeholder",
+      "auto-apply":"false",
+      "description":"Created by Github Actions",
+      "source-name":"GitHub CI/CD",
+      "source-url":"https://app.terraform.io"
+    },
+    "type":"workspaces"
+  }
+}

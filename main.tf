@@ -18,8 +18,32 @@ resource "github_actions_secret" "tfc_token" {
   plaintext_value = var.secret_tfc_token
 }
 
-resource "github_repository_file" "workflow" {
-  repository = github_repository.project.name
-  file       = ".github/workflows/terraform_deploy.yml"
-  content    = file("${path.module}/terraform_deploy.yml")
+locals {
+  files = {
+    workflow = {
+      source : "template/terraform_deploy.yml"
+      target : ".github/workflows/terraform_deploy.yml"
+    }
+
+    backend = {
+      source : "scripts/backend.template"
+      target : "scripts/backend.template"
+    }
+  }
 }
+
+resource "github_repository_file" "workflow" {
+  for_each = local.files
+
+  repository = github_repository.project.name
+  file       = each.value.target
+  content    = file("${path.module}/${each.value.source}")
+}
+
+/*
+resource "github_repository_file" "backend_template" {
+  repository = github_repository.project.name
+  file       = "scripts/backend.template"
+  content    = file("${path.module}/scripts/backend.template")
+}
+*/
