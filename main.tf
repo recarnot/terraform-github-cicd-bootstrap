@@ -1,15 +1,15 @@
 resource "github_repository" "project" {
-  name        = var.repository_name
-  description = var.repository_description
-  private     = var.repository_private
-  auto_init   = true
+  name          = var.repository_name
+  description   = var.repository_description
+  private       = var.repository_private
+  auto_init     = true
   homepage_url  = var.homepage_url
   has_issues    = var.has_issues
   has_projects  = var.has_projects
   has_wiki      = var.has_wiki
   has_downloads = var.has_downloads
 
-  topics        = ["cicd", "terraform", "github", "github-actions"]
+  topics = ["cicd", "terraform", "github", "github-actions"]
 }
 
 resource "github_actions_secret" "tfc_token" {
