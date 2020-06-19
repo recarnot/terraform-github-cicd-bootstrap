@@ -1,3 +1,4 @@
+#Creates a new GitHub repository
 resource "github_repository" "project" {
   name          = var.repository_name
   description   = var.repository_description
@@ -12,12 +13,14 @@ resource "github_repository" "project" {
   topics = ["cicd", "terraform", "github", "github-actions"]
 }
 
+#Creates GitHub secret to store Terraform Cloud/Enterprise API token
 resource "github_actions_secret" "tfc_token" {
   repository      = github_repository.project.name
   secret_name     = "TF_API_TOKEN"
   plaintext_value = var.secret_tfc_token
 }
 
+#List all script files to push
 locals {
   scripts = [
     "backend.template",
@@ -28,6 +31,7 @@ locals {
   ]
 }
 
+#Push all scripts files
 resource "github_repository_file" "scripts" {
   for_each = toset(local.scripts)
 
@@ -36,6 +40,7 @@ resource "github_repository_file" "scripts" {
   content    = file("${path.module}/scripts/${each.value}")
 }
 
+#Push an empty Terraform configuration file after script files
 resource "github_repository_file" "empty" {
   repository = github_repository.project.name
   file       = "main.tf"
@@ -44,6 +49,7 @@ resource "github_repository_file" "empty" {
   depends_on = [github_repository_file.scripts]
 }
 
+#And then push the GitHub workflow file
 resource "github_repository_file" "workflow" {
   repository = github_repository.project.name
   file       = ".github/workflows/terraform_deploy.yml"
