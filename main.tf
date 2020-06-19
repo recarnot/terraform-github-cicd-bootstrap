@@ -36,11 +36,19 @@ resource "github_repository_file" "scripts" {
   content    = file("${path.module}/scripts/${each.value}")
 }
 
+resource "github_repository_file" "empty" {
+  repository = github_repository.project.name
+  file       = "main.tf"
+  content    = ""
+
+  depends_on = [github_repository_file.scripts]
+}
+
 resource "github_repository_file" "workflow" {
   repository = github_repository.project.name
   file       = ".github/workflows/terraform_deploy.yml"
   content    = file("${path.module}/template/terraform_deploy.yml")
 
-  depends_on = [github_repository_file.scripts]
+  depends_on = [github_repository_file.empty]
 }
 
