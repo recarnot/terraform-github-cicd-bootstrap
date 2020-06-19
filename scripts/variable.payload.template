@@ -2,16 +2,16 @@
   "data": {
     "type": "vars",
     "attributes": {
-      "key": "my-key",
-      "value": "my-value",
+      "key": "T_KEY",
+      "value": "T_VALUE",
       "category": "terraform",
       "hcl": false,
-      "sensitive": "my-sensitive"
+      "sensitive": "T_SECURED"
     },
     "relationships": {
       "workspace": {
         "data": {
-          "id": "my-workspace-id",
+          "id": "T_WSID",
           "type": "workspaces"
         }
       }
