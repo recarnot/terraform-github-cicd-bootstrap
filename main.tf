@@ -14,14 +14,8 @@ resource "github_repository" "project" {
 
 resource "github_actions_secret" "tfc_token" {
   repository      = github_repository.project.name
-  secret_name     = "tfc_token"
+  secret_name     = "TF_API_TOKEN"
   plaintext_value = var.secret_tfc_token
-}
-
-resource "github_repository_file" "workflow" {
-  repository = github_repository.project.name
-  file       = ".github/workflows/terraform_deploy.yml"
-  content    = file("${path.module}/template/terraform_deploy.yml")
 }
 
 locals {
@@ -41,3 +35,12 @@ resource "github_repository_file" "scripts" {
   file       = "scripts/${each.value}"
   content    = file("${path.module}/scripts/${each.value}")
 }
+
+resource "github_repository_file" "workflow" {
+  repository = github_repository.project.name
+  file       = ".github/workflows/terraform_deploy.yml"
+  content    = file("${path.module}/template/terraform_deploy.yml")
+
+  depends_on = [github_repository_file.scripts]
+}
+
