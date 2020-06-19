@@ -1,6 +1,6 @@
 variable "github_token" {
-  default = "This is the GitHub personal access token."
-  type    = string
+  description = "This is the GitHub personal access token."
+  type        = string
 }
 
 variable "github_organization" {
