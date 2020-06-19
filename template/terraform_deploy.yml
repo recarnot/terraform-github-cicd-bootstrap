@@ -32,9 +32,8 @@ jobs:
       - name: Creates TFC Workspace variables
         run: |
           chmod +x ./scripts/createVariable.sh
-          ./scripts/createVariable.sh ${{ secrets.TF_API_TOKEN }} "ACCESS_KEY" ${{ secrets.ACCESS_KEY }} true
-          ./scripts/createVariable.sh ${{ secrets.TF_API_TOKEN }} "SECRET_KEY" ${{ secrets.SECRET_KEY }} true
-          ./scripts/createVariable.sh ${{ secrets.TF_API_TOKEN }} "region" "eu-west-1" true
+          #plain variable ./scripts/createVariable.sh ${{ secrets.TF_API_TOKEN }} "VAR_NAME" "VAR_VALUE" false
+          #secured variable ./scripts/createVariable.sh ${{ secrets.TF_API_TOKEN }} "VAR_NAME" "VAR_VALUE" true
 
       - name: Terraform Init
         run: terraform init -no-color
