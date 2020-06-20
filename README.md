@@ -85,6 +85,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      TFE_TOKEN: ${{ secrets.TF_API_TOKEN }}
       TFE_ORGANIZATION: "YOUR_TFC_ORGANIZATION_HERE"
       TFE_WORKSPACE_NAME: "YOUR_TFC_WORKSPACE_HERE"
       TFE_WORKSPACE_ID: ""
@@ -100,13 +101,13 @@ jobs:
 
       - name: Setup TFC Workspace
         run: |
-          chmod +x ./scripts/setupWorkspace.sh && ./scripts/setupWorkspace.sh ${{ secrets.TF_API_TOKEN }}
+          chmod +x ./scripts/setupWorkspace.sh && ./scripts/setupWorkspace.sh
 
       - name: Creates TFC Workspace variables
         run: |
           chmod +x ./scripts/createVariable.sh
-          #plain variable ./scripts/createVariable.sh ${{ secrets.TF_API_TOKEN }} "VAR_NAME" "VAR_VALUE" false
-          #secured variable ./scripts/createVariable.sh ${{ secrets.TF_API_TOKEN }} "VAR_NAME" "VAR_VALUE" true
+          #plain variable ./scripts/createVariable.sh "VAR_NAME" "VAR_VALUE" false
+          #secured variable ./scripts/createVariable.sh "VAR_NAME" "VAR_VALUE" true
 
       - name: Terraform Init
         run: terraform init -no-color
