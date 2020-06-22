@@ -72,8 +72,8 @@ resource "github_repository_file" "workflow" {
   content = templatefile("${path.module}/template/terraform_deploy.yml",
     {
       SECURITY_CHECK_STEP : local.security_step,
-      TF_TARGET_ORGANIZATION : var.tf_organization,
-      TF_TARGET_WORKSPACE : var.tf_workspace
+      TF_ORGANIZATION : var.tf_organization,
+      TF_WORKSPACE : var.tf_workspace
     }
   )
 
