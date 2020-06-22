@@ -16,8 +16,20 @@ variable "repository_private" {
 }
 
 variable "secret_tfc_token" {
-  description = "Terraform Cloud Token"
+  description = "Terraform Cloud API token"
   type        = string
+}
+
+variable "security_check" {
+  description = "(Optional) Set to true to use static security check. If true and 'secret_bc_token' is not set, we use Checkov engine otherwise use Bridgecrew one. Default false"
+  type        = bool
+  default     = false
+}
+
+variable "secret_bc_token" {
+  description = "(Optional) Bridgecrew API token"
+  type        = string
+  default     = ""
 }
 
 variable "homepage_url" {

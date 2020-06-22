@@ -21,10 +21,12 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v2
 
+${SECURITY_CHECK_STEP}
+
       - name: Setup Terraform CLI
         uses: hashicorp/setup-terraform@v1
         with:
-          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          cli_config_credentials_token: $${{ secrets.TF_API_TOKEN }}
 
       - name: Setup TFC Workspace
         run: |

@@ -20,6 +20,15 @@ resource "github_actions_secret" "tfc_token" {
   plaintext_value = var.secret_tfc_token
 }
 
+#Creates GitHub secret to store Bridgecrew API token if enabed
+resource "github_actions_secret" "bc_token" {
+  count = length(var.secret_bc_token) > 0 && var.security_check ? 1 : 0
+
+  repository      = github_repository.project.name
+  secret_name     = "BC_API_TOKEN"
+  plaintext_value = var.secret_bc_token
+}
+
 #List all script files to push
 locals {
   scripts = [
@@ -49,11 +58,18 @@ resource "github_repository_file" "empty" {
   depends_on = [github_repository_file.scripts]
 }
 
+locals {
+  checkov_step = file("${path.module}/template/checkov.tpl")
+  bridgecrew_step = file("${path.module}/template/bridgecrew.tpl")
+  security_step = var.security_check ? length(var.secret_bc_token) > 0 ? local.bridgecrew_step : local.checkov_step : ""
+}
+
 #And then push the GitHub workflow file
 resource "github_repository_file" "workflow" {
   repository = github_repository.project.name
   file       = ".github/workflows/terraform_deploy.yml"
-  content    = file("${path.module}/template/terraform_deploy.yml")
+  #content    = file("${path.module}/template/terraform_deploy.yml")
+  content = templatefile("${path.module}/template/terraform_deploy.yml", {SECURITY_CHECK_STEP: local.security_step} )
 
   depends_on = [github_repository_file.empty]
 }
