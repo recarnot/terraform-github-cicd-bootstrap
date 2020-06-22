@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      TFE_TOKEN: $${{ secrets.TF_API_TOKEN }}
-      TFE_ORGANIZATION: "YOUR_TFC_ORGANIZATION_HERE"
-      TFE_WORKSPACE_NAME: "YOUR_TFC_WORKSPACE_HERE"
-      TFE_WORKSPACE_ID: ""
+      TF_TOKEN: $${{ secrets.TF_API_TOKEN }}
+      TF_ORGANIZATION: "${TF_ORGANIZATION}"
+      TF_WORKSPACE_NAME: "${TF_WORKSPACE}"
+      TF_WORKSPACE_ID: ""
 
     steps:
       - name: Checkout sources
@@ -28,26 +28,26 @@ ${SECURITY_CHECK_STEP}
         with:
           cli_config_credentials_token: $${{ secrets.TF_API_TOKEN }}
 
-      - name: Setup TFC Workspace
+      - name: Setup Workspace
         run: |
           chmod +x ./scripts/setupWorkspace.sh && ./scripts/setupWorkspace.sh
 
-      - name: Creates TFC Workspace variables
+      - name: Create variables
         run: |
           chmod +x ./scripts/createVariable.sh
           #plain variable ./scripts/createVariable.sh "VAR_NAME" "VAR_VALUE" false
           #secured variable ./scripts/createVariable.sh "VAR_NAME" "VAR_VALUE" true
 
-      - name: Terraform Init
+      - name: Terraform init
         run: terraform init -no-color
 
-      - name: Terraform fmt
-        run: terraform fmt -no-color
+      - name: Terraform validate
+        run: terraform validate -no-color
 
-      - name: Terraform Plan
+      - name: Terraform plan
         id: plan
         run: terraform plan -no-color
 
-      - name: Terraform Apply
+      - name: Terraform apply
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: terraform apply -auto-approve -no-color

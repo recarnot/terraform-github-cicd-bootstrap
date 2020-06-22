@@ -4,29 +4,29 @@ resource "github_repository" "project" {
   description   = var.repository_description
   private       = var.repository_private
   auto_init     = true
-  homepage_url  = var.homepage_url
-  has_issues    = var.has_issues
-  has_projects  = var.has_projects
-  has_wiki      = var.has_wiki
-  has_downloads = var.has_downloads
+  homepage_url  = var.repository_homepage_url
+  has_issues    = var.repository_has_issues
+  has_projects  = var.repository_has_projects
+  has_wiki      = var.repository_has_wiki
+  has_downloads = var.repository_has_downloads
 
   topics = ["cicd", "terraform", "github", "github-actions"]
 }
 
 #Creates GitHub secret to store Terraform Cloud/Enterprise API token
-resource "github_actions_secret" "tfc_token" {
+resource "github_actions_secret" "tf_token" {
   repository      = github_repository.project.name
   secret_name     = "TF_API_TOKEN"
-  plaintext_value = var.secret_tfc_token
+  plaintext_value = var.tf_token
 }
 
 #Creates GitHub secret to store Bridgecrew API token if enabed
 resource "github_actions_secret" "bc_token" {
-  count = length(var.secret_bc_token) > 0 && var.security_check ? 1 : 0
+  count = length(var.security_bridgecrew_token) > 0 && var.security_check ? 1 : 0
 
   repository      = github_repository.project.name
   secret_name     = "BC_API_TOKEN"
-  plaintext_value = var.secret_bc_token
+  plaintext_value = var.security_bridgecrew_token
 }
 
 #List all script files to push
@@ -59,17 +59,23 @@ resource "github_repository_file" "empty" {
 }
 
 locals {
-  checkov_step = file("${path.module}/template/checkov.tpl")
+  checkov_step    = file("${path.module}/template/checkov.tpl")
   bridgecrew_step = file("${path.module}/template/bridgecrew.tpl")
-  security_step = var.security_check ? length(var.secret_bc_token) > 0 ? local.bridgecrew_step : local.checkov_step : ""
+  security_step   = var.security_check ? length(var.security_bridgecrew_token) > 0 ? local.bridgecrew_step : local.checkov_step : ""
 }
 
 #And then push the GitHub workflow file
 resource "github_repository_file" "workflow" {
   repository = github_repository.project.name
   file       = ".github/workflows/terraform_deploy.yml"
-  #content    = file("${path.module}/template/terraform_deploy.yml")
-  content = templatefile("${path.module}/template/terraform_deploy.yml", {SECURITY_CHECK_STEP: local.security_step} )
+
+  content = templatefile("${path.module}/template/terraform_deploy.yml",
+    {
+      SECURITY_CHECK_STEP : local.security_step,
+      TF_TARGET_ORGANIZATION : var.tf_organization,
+      TF_TARGET_WORKSPACE : var.tf_workspace
+    }
+  )
 
   depends_on = [github_repository_file.empty]
 }

@@ -1,3 +1,30 @@
+variable "tf_organization" {
+  description = "Terraform Cloud/Enterprise organization to use."
+  type        = string
+}
+
+variable "tf_token" {
+  description = "Terraform Cloud API token where to deploy"
+  type        = string
+}
+
+variable "tf_workspace" {
+  description = "Terraform workspace to use."
+  type        = string
+}
+
+variable "security_check" {
+  description = "(Optional) Set to true to use static security check. If true and 'secret_bc_token' is not set, we use Checkov engine otherwise use Bridgecrew one. Default false"
+  type        = bool
+  default     = false
+}
+
+variable "security_bridgecrew_token" {
+  description = "(Optional) Bridgecrew API token"
+  type        = string
+  default     = ""
+}
+
 variable "repository_name" {
   description = "The name of the repository."
   type        = string
@@ -15,47 +42,30 @@ variable "repository_private" {
   default     = true
 }
 
-variable "secret_tfc_token" {
-  description = "Terraform Cloud API token"
-  type        = string
-}
-
-variable "security_check" {
-  description = "(Optional) Set to true to use static security check. If true and 'secret_bc_token' is not set, we use Checkov engine otherwise use Bridgecrew one. Default false"
-  type        = bool
-  default     = false
-}
-
-variable "secret_bc_token" {
-  description = "(Optional) Bridgecrew API token"
-  type        = string
-  default     = ""
-}
-
-variable "homepage_url" {
+variable "repository_homepage_url" {
   description = "(Optional) URL of a page describing the project."
   default     = ""
 }
 
-variable "has_issues" {
+variable "repository_has_issues" {
   description = "Optional) Set to true to enable the GitHub Issues features on the repository. Default false"
   type        = bool
   default     = false
 }
 
-variable "has_projects" {
+variable "repository_has_projects" {
   description = "(Optional) Set to true to enable the GitHub Projects features on the repository. Default false"
   type        = bool
   default     = false
 }
 
-variable "has_wiki" {
+variable "repository_has_wiki" {
   description = "(Optional) Set to true to enable the GitHub Wiki features on the repository. Default false"
   type        = bool
   default     = false
 }
 
-variable "has_downloads" {
+variable "repository_has_downloads" {
   description = "(Optional) Set to true to enable the (deprecated) downloads features on the repository. Default false"
   type        = bool
   default     = false
