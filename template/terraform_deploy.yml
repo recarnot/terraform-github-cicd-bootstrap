@@ -22,20 +22,24 @@ ${SECURITY_CHECK_STEP}
       - name: Setup Terraform CLI
         uses: hashicorp/setup-terraform@v1
         with:
+          cli_config_credentials_hostname: $${{ secrets.TF_HOSTNAME }}
           cli_config_credentials_token: $${{ secrets.TF_API_TOKEN }}
 
       - name: Setup Terraform Workspace
         uses: recarnot/terraform-github-workspace-setup-action@master
         with:
+          hostname: $${{ secrets.TF_HOSTNAME }}
           organization: "${TF_ORGANIZATION}"
           workspace: "${TF_WORKSPACE}"
           token: $${{ secrets.TF_API_TOKEN }}
           vars: ''
 
       - name: Terraform init
+        id: init
         run: terraform init -no-color
 
       - name: Terraform validate
+        id: validate
         run: terraform validate -no-color
 
       - name: Terraform plan
@@ -43,6 +47,7 @@ ${SECURITY_CHECK_STEP}
         run: terraform plan -no-color
 
       - name: Terraform apply
+        id: apply
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: terraform apply -auto-approve -no-color
 

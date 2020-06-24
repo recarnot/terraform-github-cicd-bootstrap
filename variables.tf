@@ -13,6 +13,12 @@ variable "tf_workspace" {
   type        = string
 }
 
+variable "tf_hostname" {
+  description = "Terraform hostname."
+  type        = string
+  default     = "app.terraform.io"
+}
+
 variable "security_check" {
   description = "(Optional) Set to true to use static security check. If true and 'secret_bc_token' is not set, we use Checkov engine otherwise use Bridgecrew one. Default false"
   type        = bool

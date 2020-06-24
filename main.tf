@@ -20,6 +20,13 @@ resource "github_actions_secret" "tf_token" {
   plaintext_value = var.tf_token
 }
 
+#Creates GitHub secret to store Terraform hostname
+resource "github_actions_secret" "tf_host" {
+  repository      = github_repository.project.name
+  secret_name     = "TF_HOSTNAME"
+  plaintext_value = var.tf_hostname
+}
+
 #Creates GitHub secret to store Bridgecrew API token if enabed
 resource "github_actions_secret" "bc_token" {
   count = length(var.security_bridgecrew_token) > 0 && var.security_check ? 1 : 0
@@ -36,6 +43,7 @@ resource "github_repository_file" "backend" {
 
   content = templatefile("${path.module}/template/backend.tpl",
     {
+      TF_HOSTNAME : var.tf_hostname,
       TF_ORGANIZATION : var.tf_organization,
       TF_WORKSPACE : var.tf_workspace
     }
