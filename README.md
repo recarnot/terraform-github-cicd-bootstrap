@@ -93,43 +93,46 @@ Just edit the "*terraform_deploy.yml*" file to customize your workflow.
 For example you can add variables to workspace using the "*Creates TFC Workspace variables*" step.
 
 ```yaml
-name: 'Terraform'
-
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-
 jobs:
   terraform-deploy:
     name: 'Terraform deploy'
     runs-on: ubuntu-latest
 
-    env:
-      TF_TOKEN: ${{ secrets.TF_API_TOKEN }}
-      TF_ORGANIZATION: "YOUR_TFC_ORGANIZATION_HERE"
-      TF_WORKSPACE_NAME: "YOUR_TFC_WORKSPACE_HERE"
-      TF_WORKSPACE_ID: ""
-
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
-
+      
+      - name: Static security check with Checkov
+        id: Checkov
+        uses: bridgecrewio/checkov-action@master
+        
       - name: Setup Terraform CLI
         uses: hashicorp/setup-terraform@v1
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-      - name: Setup Workspace
-        run: |
-          chmod +x ./scripts/setupWorkspace.sh && ./scripts/setupWorkspace.sh
-
-      - name: Create variables
-        run: |
-          chmod +x ./scripts/createVariable.sh
-          #plain variable ./scripts/createVariable.sh "VAR_NAME" "VAR_VALUE" false
-          #secured variable ./scripts/createVariable.sh "VAR_NAME" "VAR_VALUE" true
+      - name: Setup Terraform Workspace
+        uses: recarnot/terraform-github-workspace-setup-action@master
+        with:
+          organization: "my-organization"
+          workspace: "my-workspace"
+          token: ${{ secrets.TF_API_TOKEN }}
+          vars: '
+            {
+              "key": "region",
+              "value": "eu-west-3",
+              "sensitive": "false"
+            },
+            {
+              "key": "access_id",
+              "value": "${{ secrets.ACCESS_ID }}",
+              "sensitive": "true"
+            },
+            {
+              "key": "secret_key",
+              "value": "${{ secrets.SECRET_KEY }}",
+              "sensitive": "true"
+            }'
 
       - name: Terraform init
         run: terraform init -no-color
@@ -144,5 +147,13 @@ jobs:
       - name: Terraform apply
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: terraform apply -auto-approve -no-color
+        
+      - name: Terraform doc
+        uses: Dirrk/terraform-docs@master
+        with:
+          tf_docs_output_file: USAGE.md
+          tf_docs_output_method: replace
+          tf_docs_git_commit_message: "Documentation updated"
+          tf_docs_git_push: true
 ```
 
