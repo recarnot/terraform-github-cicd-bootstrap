@@ -27,8 +27,8 @@ ${SECURITY_CHECK_STEP}
       - name: Setup Terraform Workspace
         uses: recarnot/terraform-github-workspace-setup-action@master
         with:
-          organization: ${TF_ORGANIZATION}
-          workspace: ${TF_WORKSPACE}
+          organization: "${TF_ORGANIZATION}"
+          workspace: "${TF_WORKSPACE}"
           token: ${{ secrets.TF_API_TOKEN }}
           vars: ''
 
