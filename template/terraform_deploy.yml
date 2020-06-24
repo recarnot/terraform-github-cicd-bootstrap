@@ -51,10 +51,3 @@ ${SECURITY_CHECK_STEP}
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: terraform apply -auto-approve -no-color
 
-      - name: Terraform doc
-        uses: Dirrk/terraform-docs@master
-        with:
-          tf_docs_output_file: USAGE.md
-          tf_docs_output_method: replace
-          tf_docs_git_commit_message: "Documentation updated"
-          tf_docs_git_push: true
