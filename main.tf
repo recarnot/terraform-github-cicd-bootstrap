@@ -32,7 +32,7 @@ resource "github_actions_secret" "bc_token" {
 #Push backend file
 resource "github_repository_file" "backend" {
   repository = github_repository.project.name
-  file       = ".github/workflows/terraform_deploy.yml"
+  file       = "backend.tf"
 
   content = templatefile("${path.module}/template/backend.tpl",
     {
