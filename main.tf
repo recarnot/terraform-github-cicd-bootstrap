@@ -29,33 +29,26 @@ resource "github_actions_secret" "bc_token" {
   plaintext_value = var.security_bridgecrew_token
 }
 
-#List all script files to push
-locals {
-  scripts = [
-    "backend.template",
-    "createVariable.sh",
-    "setupWorkspace.sh",
-    "variable.payload.template",
-    "workspace.payload.template"
-  ]
-}
-
-#Push all scripts files
-resource "github_repository_file" "scripts" {
-  for_each = toset(local.scripts)
-
+#Push backend file
+resource "github_repository_file" "backend" {
   repository = github_repository.project.name
-  file       = "scripts/${each.value}"
-  content    = file("${path.module}/scripts/${each.value}")
+  file       = ".github/workflows/terraform_deploy.yml"
+
+  content = templatefile("${path.module}/template/backend.tpl",
+    {
+      TF_ORGANIZATION : var.tf_organization,
+      TF_WORKSPACE : var.tf_workspace
+    }
+  )
 }
 
 #Push an empty Terraform configuration file after script files
 resource "github_repository_file" "empty" {
   repository = github_repository.project.name
   file       = "main.tf"
-  content    = file("${path.module}/template/empty.template")
+  content    = file("${path.module}/template/empty.tpl")
 
-  depends_on = [github_repository_file.scripts]
+  depends_on = [github_repository_file.backend]
 }
 
 locals {
