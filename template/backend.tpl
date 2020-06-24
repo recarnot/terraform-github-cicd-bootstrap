@@ -1,9 +1,9 @@
 terraform {
   backend "remote" {
-    organization = "TF_ORGANIZATION"
+    organization = "${TF_ORGANIZATION}"
 
     workspaces {
-      name = "TF_WORKSPACE"
+      name = "${TF_WORKSPACE}"
     }
   }
 }
