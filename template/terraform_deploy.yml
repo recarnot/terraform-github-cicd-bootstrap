@@ -47,9 +47,9 @@ ${SECURITY_CHECK_STEP}
         run: terraform apply -auto-approve -no-color
 
       - name: Terraform doc
-          uses: Dirrk/terraform-docs@master
-          with:
-            tf_docs_output_file: USAGE.md
-            tf_docs_output_method: replace
-            tf_docs_git_commit_message: "Documentation updated"
-            tf_docs_git_push: true
+        uses: Dirrk/terraform-docs@master
+        with:
+          tf_docs_output_file: USAGE.md
+          tf_docs_output_method: replace
+          tf_docs_git_commit_message: "Documentation updated"
+          tf_docs_git_push: true
