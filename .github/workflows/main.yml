@@ -3,7 +3,7 @@ name: 'Terraform plan check'
 on: push
 
 jobs:
-  terraform-deploy:
+  terraform-plan:
     name: 'Terraform plan'
     runs-on: ubuntu-latest
     defaults:
