@@ -1,4 +1,10 @@
 # Module : terraform-github-cicd-bootstrap
+
+<p align="left">
+  <a href="https://github.com/recarnot/terraform-github-cicd-bootstrap/actions"><img alt="Plan check" src="https://github.com/recarnot/terraform-github-cicd-bootstrap/workflows/Plan%20check/badge.svg" /></a>
+  <a href="https://github.com/recarnot/terraform-github-cicd-bootstrap/actions"><img alt="Security check" src="https://github.com/recarnot/terraform-github-cicd-bootstrap/workflows/Security%20check/badge.svg" /></a>
+</p>
+
 This [**Terraform**](https://www.terraform.io/) module build a basic [**GitHub**](https://github.com/) repository to use **Terraform** **GitHub Actions** for Terraform **Cloud/Enterprise** projects.
 
 A **backend** to connect to enable **Terraform** Cloud/Enterprise state management is created.
