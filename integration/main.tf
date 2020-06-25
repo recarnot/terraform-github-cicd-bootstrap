@@ -1,8 +1,8 @@
 module "bootstrap" {
   source = "../"
 
-  github_token        = ""
-  github_organization = ""
+  github_token        = "kjhgfdfghjkjhghjkjh"
+  github_organization = "recarnot"
 
   repository_name = "my-new-repo-on-github"
 
