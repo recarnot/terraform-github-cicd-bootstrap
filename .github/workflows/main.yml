@@ -30,6 +30,3 @@ jobs:
 
       - name: Terraform plan
         run: terraform plan -var="github_token=${{ secrets.GH_TOKEN }}" -no-color
-
-      - name: Terraform apply
-        run: terraform apply -auto-approve -var="github_token=${{ secrets.GH_TOKEN }}" -no-color

@@ -3,11 +3,6 @@ variable "github_token" {
   type = string
 }
 
-output "token" {
-  value = var.github_token
-}
-
-/*
 module "bootstrap" {
   source = "../"
 
@@ -21,4 +16,4 @@ module "bootstrap" {
   tf_workspace    = "my-tf-workspace"
 
   security_check  = true
-}*/
+}
