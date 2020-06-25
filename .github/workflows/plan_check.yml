@@ -1,4 +1,4 @@
-name: 'Terraform plan check'
+name: 'Plan check'
 
 on: push
 
