@@ -19,9 +19,6 @@ jobs:
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-      - name: test
-        run: ls
-
       - name: Terraform init
         run: terraform init -no-color
 
