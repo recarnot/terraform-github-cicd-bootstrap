@@ -29,4 +29,4 @@ jobs:
 
       - name: Terraform plan
         id: plan
-        run: terraform plan -no-color
+        run: terraform plan -var="github_token=${{ secrets.GH_TOKEN }}" -no-color

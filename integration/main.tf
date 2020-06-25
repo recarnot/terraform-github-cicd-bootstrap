@@ -1,7 +1,12 @@
+variable "github_token" {
+  description = "GitHub token"
+  type = string
+}
+
 module "bootstrap" {
   source = "../"
 
-  github_token        = "kjhgfdfghjkjhghjkjh"
+  github_token        = var.github_token
   github_organization = "recarnot"
 
   repository_name = "my-new-repo-on-github"
