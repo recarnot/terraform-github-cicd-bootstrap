@@ -1,9 +1,6 @@
 name: 'Terraform plan check'
 
-on:
-  push:
-    branches:
-      - master
+on: push
 
 jobs:
   terraform-deploy:
