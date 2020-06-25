@@ -67,6 +67,8 @@ locals {
 
 #And then push the GitHub workflow file
 resource "github_repository_file" "workflow" {
+  count = var.auto_deploy_workflow ? 1 : 0
+
   repository = github_repository.project.name
   file       = ".github/workflows/terraform_deploy.yml"
 

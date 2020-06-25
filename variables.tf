@@ -76,3 +76,9 @@ variable "repository_has_downloads" {
   type        = bool
   default     = false
 }
+
+variable "auto_deploy_workflow" {
+  description = "Push or not the GitHub workflow file"
+  type        = bool
+  default     = true
+}
